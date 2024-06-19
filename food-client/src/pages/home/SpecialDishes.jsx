@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import Cards from "../../components/Cards";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-const simpleNextArrow = (props) => {
+const Simple_next_arrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -18,7 +18,7 @@ const simpleNextArrow = (props) => {
   );
 };
 
-const simplePrevArrow = (props) => {
+const Simple_prev_arrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -79,8 +79,8 @@ const SpecialDishes = () => {
         },
       },
     ],
-    nextArrow: <simpleNextArrow />,
-    prevArrow: <simplePrevArrow />,
+    nextArrow: <Simple_next_arrow />,
+    prevArrow: <Simple_prev_arrow />
   };
 
   return (
