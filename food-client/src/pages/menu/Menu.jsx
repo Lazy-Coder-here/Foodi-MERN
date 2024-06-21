@@ -21,7 +21,7 @@ const Menu = () => {
         setMenu(data);
         setFilteredItems(data);
       } catch (error) {
-        console.log(error);
+        console.log("Error fetching data:", error);
       }
     };
 
@@ -85,7 +85,7 @@ const Menu = () => {
     <div>
       {/* menu banner */}
       <div className="section-container bg-gradient-to-r from-[#FAFAFA] from-0% to-[#FCFCFC] to-100%">
-        <div className="py-48 flex flex-col justify-center items-center gap-8">
+        <div className="py-48 flex flex-col justify-center items-center">
           {/* texts */}
           <div className="text-center space-y-7 px-4">
             <h2 className="md:text-5xl text-4xl font-bold md:leading-snug leading-snug">
@@ -112,37 +112,37 @@ const Menu = () => {
           <div className="flex flex-row justify-start md:items-center md:gap-8 gap-4 flex-wrap">
             <button
               onClick={showAll}
-              className={selectedCategory === "all" && "active"}
+              className={selectedCategory === "all" ? "active" : ""}
             >
               All
             </button>
             <button
               onClick={() => filterItems("salad")}
-              className={selectedCategory === "salad" && "active"}
+              className={selectedCategory === "salad" ? "active" : ""}
             >
               Salad
             </button>
             <button
               onClick={() => filterItems("pizza")}
-              className={selectedCategory === "pizza" && "active"}
+              className={selectedCategory === "pizza" ? "active" : ""}
             >
               Pizza
             </button>
             <button
               onClick={() => filterItems("soup")}
-              className={selectedCategory === "soup" && "active"}
+              className={selectedCategory === "soup" ? "active" : ""}
             >
               Soups
             </button>
             <button
               onClick={() => filterItems("dessert")}
-              className={selectedCategory === "dessert" && "active"}
+              className={selectedCategory === "dessert" ? "active" : ""}
             >
               Desserts
             </button>
             <button
               onClick={() => filterItems("drinks")}
-              className={selectedCategory === "drinks" && "active"}
+              className={selectedCategory === "drinks" ? "active" : ""}
             >
               Drinks
             </button>
@@ -172,7 +172,7 @@ const Menu = () => {
         </div>
 
         {/* products card */}
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
           {currentItems.map((item) => (
             <Cards key={item._id} item={item} />
           ))}
