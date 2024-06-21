@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "/logo.png";
-import { TbPhoneCall, TbWindElectricity } from "react-icons/tb";
+import { FaRegUser } from "react-icons/fa";
+import Modal from "./Modal";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
@@ -19,13 +20,15 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.addEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
   const navItems = (
     <>
       <li>
-        <a className="text-green" href="/">Home</a>
+        <a className="text-green" href="/">
+          Home
+        </a>
       </li>
       <li>
         <details>
@@ -74,8 +77,8 @@ const Navbar = () => {
         }`}
       >
         <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div className="dropdown justify-between">
+            <label tabIndex={0} role="" className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -90,7 +93,7 @@ const Navbar = () => {
                   d="M4 6h16M4 12h8m-8 6h16"
                 />
               </svg>
-            </div>
+            </label>
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
@@ -127,9 +130,9 @@ const Navbar = () => {
             </svg>
           </button>
           {/* cart items */}
-          <div
+          <label
             tabIndex={0}
-            role="button"
+            role=""
             className="btn btn-ghost btn-circle hidden mr-3 lg:flex items-center justify-center"
           >
             <div className="indicator">
@@ -149,11 +152,16 @@ const Navbar = () => {
               </svg>
               <span className="badge badge-sm indicator-item">8</span>
             </div>
-          </div>
-          {/* button */}
-          <a className="btn bg-green rounded-full px-6 text-white flex items-center gap-2">
-            <TbPhoneCall /> Contact
-          </a>
+          </label>
+          {/* login button */}
+          <button
+            className="btn bg-green rounded-full px-6 text-white flex items-center gap-2"
+            onClick={() => document.getElementById("my_modal_3").showModal()}
+          >
+            <FaRegUser /> Login
+          </button>
+
+          <Modal/>
         </div>
       </div>
     </header>

@@ -6,7 +6,7 @@ const Footer = () => {
       <footer className="footer xl:px-24 py-10 px-4 text-base-content">
         <aside>
           <img src="/logo.png" alt="" />
-          <p className="my-5 md:w-40">
+          <p className="my-3 md:w-40">
             Savor the artistry where every dish is a culinary masterpiece
           </p>
         </aside>
@@ -33,7 +33,7 @@ const Footer = () => {
       </footer>
 
       <hr />
-      <footer className="footer items-center xl:px-24 py-10 px-4">
+      <footer className="footer items-center xl:px-24 py-4 px-4 mt-2">
         <aside className="items-center grid-flow-col">
           <p>Copyright © 2024 - All right reserved</p>
         </aside>

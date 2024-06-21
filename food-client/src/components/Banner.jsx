@@ -53,7 +53,7 @@ const Banner = () => {
                 <p className="text-red">$18.00</p>
               </div>
             </div>
-            <div className="sm:flex hidden bg-white py-2 px-3 rounded-2xl items-center gap-3 shadow-md w-64">
+            <div className="md:flex hidden bg-white py-2 px-3 rounded-2xl items-center gap-3 shadow-md w-64">
               <img
                 src="/images/home/b-food1.png"
                 alt=""
