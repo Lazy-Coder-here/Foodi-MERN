@@ -152,7 +152,7 @@ const Navbar = () => {
               </svg>
               <span className="badge badge-sm indicator-item">8</span>
             </div>
-          </label>
+          </div>
           {/* login button */}
           <button
             className="btn bg-green rounded-full px-6 text-white flex items-center gap-2"
@@ -161,7 +161,7 @@ const Navbar = () => {
             <FaRegUser /> Login
           </button>
 
-          <Modal/>
+          <Modal />
         </div>
       </div>
     </header>
