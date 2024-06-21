@@ -153,15 +153,10 @@ const Navbar = () => {
               <span className="badge badge-sm indicator-item">8</span>
             </div>
           </div>
-          {/* login button */}
-          <button
-            className="btn bg-green rounded-full px-6 text-white flex items-center gap-2"
-            onClick={() => document.getElementById("my_modal_3").showModal()}
-          >
-            <FaRegUser /> Login
-          </button>
-
-          <Modal />
+          {/* button */}
+          <a className="btn bg-green rounded-full px-6 text-white flex items-center gap-2">
+            <TbPhoneCall /> Contact
+          </a>
         </div>
       </div>
     </header>
