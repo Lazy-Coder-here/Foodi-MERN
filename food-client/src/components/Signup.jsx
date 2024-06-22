@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa6";
+import Modal from "./Modal";
 
-const Modal = () => {
+const Signup = () => {
   const {
     register,
     handleSubmit,
@@ -13,23 +14,17 @@ const Modal = () => {
   const onSubmit = (data) => console.log(data);
 
   return (
-    <dialog id="my_modal_3" className="modal">
-      <div className="modal-box">
+    <div className="max-w-md bg-gray-50 shadow w-full mx-auto flex items-center justify-center my-20">
+      <Link to="/" className="absolute left-5 top-5 underline text-green">
+        Go Back to Home
+      </Link>
+      <div className="flex flex-col justify-center mt-0">
         <form
           onSubmit={handleSubmit(onSubmit)}
           method="dialog"
           className="card-body"
         >
-          <h3 className="font-bold text-lg pb-2">Please Login</h3>
-          {/* if there is a button in form, it will close the modal */}
-          <button
-            htmlFor="my_modal_3"
-            onClick={() => document.getElementById("my_modal_3").close()}
-            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          >
-            ✕
-          </button>
-
+          <h3 className="font-bold text-lg pb-2">Create an account</h3>
           {/* email */}
           <div className="form-control">
             <label className="label">
@@ -56,11 +51,6 @@ const Modal = () => {
               {...register("password")}
               required
             />
-            <label className="label mt-1">
-              <a href="#" className="label-text-alt link link-hover">
-                Forgot password?
-              </a>
-            </label>
           </div>
 
           {/* error text */}
@@ -69,18 +59,22 @@ const Modal = () => {
           <div className="form-control mt-6">
             <input
               type="submit"
-              value="Login"
+              value="Signup"
               className="btn bg-green text-white"
             />
           </div>
-
-          <h3 className="text-center my-2">
-            Don't have an account?{" "}
-            <Link to="/sign-up" className="underline text-green ml-1">
-              Signup Now
-            </Link>{" "}
-          </h3>
         </form>
+        <span className="text-center mb-2 mt-0">
+          Already have an account?{" "}
+          <button
+            to="/sign-up"
+            className="underline text-green ml-1"
+            onClick={() => document.getElementById("my_modal_3").showModal()}
+          >
+            Login
+          </button>{" "}
+          <Modal />
+        </span>
 
         {/* social media sign in buttons */}
         <div className="text-center space-x-3 mb-5">
@@ -95,8 +89,8 @@ const Modal = () => {
           </button>
         </div>
       </div>
-    </dialog>
+    </div>
   );
 };
 
-export default Modal;
+export default Signup;
