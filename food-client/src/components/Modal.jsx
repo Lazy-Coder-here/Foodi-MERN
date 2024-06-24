@@ -1,7 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa6";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const Modal = () => {
   const {
@@ -10,7 +11,55 @@ const Modal = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const { signUpWithGmail, signUpWithFacebook, login } =
+    useContext(AuthContext);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // redirecting to homepage or specific page
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
+  const onSubmit = (data) => {
+    const { email, password } = data;
+    // console.log(email, password);
+    login(email, password)
+      .then((result) => {
+        setErrorMessage("");
+        const { user } = result;
+        alert("Login Successful");
+        document.getElementById("my_modal_3").close();
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        setErrorMessage("Please enter correct email/password");
+      });
+  };
+
+  // google sign-in
+  const handleLoginGmail = () => {
+    signUpWithGmail()
+      .then((result) => {
+        const { user } = result;
+        alert("Login Successful");
+        document.getElementById("my_modal_3").close();
+        navigate(from, { replace: true });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  // facebook sign-in
+  const handleLoginFacebook = () => {
+    signUpWithFacebook()
+      .then((result) => {
+        const { user } = result;
+        alert("Login Successful");
+        document.getElementById("my_modal_3").close();
+        navigate(from, { replace: true });
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <dialog id="my_modal_3" className="modal">
@@ -64,9 +113,12 @@ const Modal = () => {
           </div>
 
           {/* error text */}
+          {errorMessage && (
+            <p className="text-red text-xs italic">{errorMessage}</p>
+          )}
 
           {/* login button */}
-          <div className="form-control mt-6">
+          <div className="form-control mt-4">
             <input
               type="submit"
               value="Login"
@@ -84,10 +136,16 @@ const Modal = () => {
 
         {/* social media sign in buttons */}
         <div className="text-center space-x-3 mb-5">
-          <button className="btn btn-circle hover:text-white hover:bg-green">
+          <button
+            className="btn btn-circle hover:text-white hover:bg-green"
+            onClick={handleLoginGmail}
+          >
             <FaGoogle />
           </button>
-          <button className="btn btn-circle hover:text-white hover:bg-green">
+          <button
+            className="btn btn-circle hover:text-white hover:bg-green"
+            onClick={handleLoginFacebook}
+          >
             <FaFacebookF />
           </button>
           <button className="btn btn-circle hover:text-white hover:bg-green">

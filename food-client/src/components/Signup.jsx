@@ -1,8 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa6";
 import Modal from "./Modal";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const Signup = () => {
   const {
@@ -11,7 +12,29 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const { createUser, signUpWithGmail, signUpWithFacebook, login } =
+    useContext(AuthContext);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // redirecting to homepage or specific page
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
+  const onSubmit = (data) => {
+    const { email, password } = data;
+    // console.log(email, password);
+    createUser(email, password)
+      .then((result) => {
+        const { user } = result;
+        alert("Account created successfully!");
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        setErrorMessage("Please enter a valid email");
+      });
+  };
 
   return (
     <div className="max-w-md bg-gray-50 shadow w-full mx-auto flex items-center justify-center my-20">
@@ -54,6 +77,9 @@ const Signup = () => {
           </div>
 
           {/* error text */}
+          {errorMessage && (
+            <p className="text-red text-xs italic">{errorMessage}</p>
+          )}
 
           {/* login button */}
           <div className="form-control mt-6">
