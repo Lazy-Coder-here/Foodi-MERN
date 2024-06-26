@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa6";
-import { AuthContext } from "../contexts/AuthProvider";
+import { useAuth } from "../contexts/AuthProvider";
 
 const Modal = () => {
   const {
@@ -11,8 +11,7 @@ const Modal = () => {
     formState: { errors },
   } = useForm();
 
-  const { signUpWithGmail, signUpWithFacebook, login } =
-    useContext(AuthContext);
+  const { signUpWithGmail, signUpWithFacebook, login } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState("");
 

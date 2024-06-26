@@ -1,6 +1,19 @@
 import React from "react";
+import { useAuth } from "../contexts/AuthProvider";
 
 const Profile = ({ user }) => {
+  const { logOut } = useAuth();
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        // Sign-out successful.
+        alert("Logout Successful!");
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
   return (
     <div>
       <div className="drawer drawer-end z-50">
@@ -12,7 +25,14 @@ const Profile = ({ user }) => {
             className="drawer-button btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              <img alt="Tailwind CSS Navbar component" src={user.photoURL ? user.photoURL : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
+              <img
+                alt="Tailwind CSS Navbar component"
+                src={
+                  user.photoURL
+                    ? user.photoURL
+                    : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                }
+              />
             </div>
           </label>
         </div>
@@ -25,7 +45,7 @@ const Profile = ({ user }) => {
           <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
             {/* Sidebar content here */}
             <li>
-              <a>Profile</a>
+              <a href="/update-profile">Profile</a>
             </li>
             <li>
               <a>Orders</a>
@@ -34,7 +54,7 @@ const Profile = ({ user }) => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={handleLogout}>Logout</a>
             </li>
           </ul>
         </div>
