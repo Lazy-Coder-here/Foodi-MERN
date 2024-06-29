@@ -17,7 +17,7 @@ const UpdateProfile = () => {
 
   const onSubmit = (data) => {
     const name = data.name;
-    const photoURL = data.photoURL;
+    let photoURL = data.photoURL;
     if(!photoURL) {
       photoURL = user.photoURL;
     }

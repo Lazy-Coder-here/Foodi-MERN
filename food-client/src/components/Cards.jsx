@@ -1,12 +1,55 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
+import { useAuth } from "../contexts/AuthProvider";
+import Swal from 'sweetalert2'
+import { BaseURL } from "../Config/config";
+import useCart from "../Hooks/useCart";
 
 const Cards = ({ i, item }) => {
+  const { _id, name, image, recipe, price } = item;
+
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+
+  const { user } = useAuth();
+
+  const [cart, refetch] = useCart();
 
   const handleHeartClick = () => {
     setIsHeartFilled(!isHeartFilled);
+  };
+
+  const handleAddtoCart = (item) => {
+    // console.log("btn is clicked", item);
+    const cartItem = {
+      menuItemId: _id,
+      name,
+      quantity: 1,
+      image,
+      price,
+      email: user.email,
+    };
+    // console.log(cartItem);
+    fetch(`${BaseURL}/carts`, {
+      method: "POST",
+      headers: {
+        "content-Type": "application/json",
+      },
+      body: JSON.stringify(cartItem),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        if(data.insertedId) {
+          Swal.fire({
+            icon: "success",
+            title: "Item added to your cart",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          refetch();
+        }
+      });
   };
 
   return (
@@ -39,7 +82,12 @@ const Cards = ({ i, item }) => {
           <h5 className="font-semibold">
             <span className="text-sm text-red">$</span> {item.price}
           </h5>
-          <button className="btn bg-green text-white">Buy Now</button>
+          <button
+            className="btn bg-green text-white"
+            onClick={() => handleAddtoCart(item)}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
