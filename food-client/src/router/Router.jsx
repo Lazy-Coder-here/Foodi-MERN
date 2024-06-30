@@ -6,6 +6,9 @@ import Signup from "../components/Signup";
 import PrivateRouter from "../PrivateRouter/PrivateRouter";
 import UpdateProfile from "../pages/dashboard/UpdateProfile";
 import CartPage from "../pages/menu/CartPage";
+import DashboardLayout from "../layout/DashboardLayout";
+import Dashboard from "../pages/dashboard/admin/Dashboard";
+import Users from "../pages/dashboard/admin/Users";
 
 const router = createBrowserRouter([
   {
@@ -20,23 +23,41 @@ const router = createBrowserRouter([
         path: "/menu",
         element: (
           <PrivateRouter>
-            <Menu/>
+            <Menu />
           </PrivateRouter>
-        )
+        ),
       },
       {
         path: "/cart-page",
-        element: <CartPage/>
+        element: <CartPage />,
       },
       {
         path: "/update-profile",
-        element: <UpdateProfile/>
+        element: <UpdateProfile />,
       },
     ],
   },
   {
     path: "/sign-up",
     element: <Signup />,
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRouter>
+        <DashboardLayout />
+      </PrivateRouter>
+    ),
+    children: [
+      {
+        path: "",
+        element: <Dashboard />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+    ],
   },
 ]);
 
