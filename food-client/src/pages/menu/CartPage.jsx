@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { BaseURL } from "../../Config/config";
 import { useAuth } from "../../contexts/AuthProvider";
+import axios from "axios";
 
 const CartPage = () => {
   const [cart, refetch] = useCart();
@@ -18,7 +19,7 @@ const CartPage = () => {
   // handle increase function
   const handleIncrease = (item) => {
     // console.log(item._id);
-    console.log("+ clicked")
+    console.log("+ clicked");
     fetch(`${BaseURL}/carts/${item._id}`, {
       method: "PUT",
       headers: {
@@ -47,7 +48,7 @@ const CartPage = () => {
 
   // handle decrease function
   const handleDecrease = (item) => {
-    console.log("- clicked")
+    console.log("- clicked");
     if (item.quantity > 1) {
       fetch(`${BaseURL}/carts/${item._id}`, {
         method: "PUT",
@@ -82,7 +83,7 @@ const CartPage = () => {
     return total + calculatePrice(item);
   }, 0);
 
-  const orderTotal = cartSubTotal; 
+  const orderTotal = cartSubTotal;
 
   // delete button
   const handleDelete = (item) => {
@@ -96,20 +97,21 @@ const CartPage = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`${BaseURL}/carts/${item._id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount > 0) {
-              refetch();
+        axios
+          .delete(`${BaseURL}/carts/${item._id}`)
+          .then((res) => {
+            if (res) {
               Swal.fire({
                 title: "Deleted!",
-                text: "Your file has been deleted.",
+                text: "Your Item has been deleted.",
                 icon: "success",
                 confirmButtonColor: "#39DB4A",
               });
+              refetch();
             }
+          })
+          .catch((error) => {
+            console.log(error);
           });
       }
     });

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthProvider";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { BaseURL } from "../Config/config";
 import useCart from "../Hooks/useCart";
+import axios from "axios";
 
 const Cards = ({ i, item }) => {
   const { _id, name, image, recipe, price } = item;
@@ -30,25 +31,30 @@ const Cards = ({ i, item }) => {
       email: user.email,
     };
     // console.log(cartItem);
-    fetch(`${BaseURL}/carts`, {
-      method: "POST",
-      headers: {
-        "content-Type": "application/json",
-      },
-      body: JSON.stringify(cartItem),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
-        if(data.insertedId) {
+    axios
+      .post(`${BaseURL}/carts`, cartItem)
+      .then((res) => {
+        // console.log(res);
+        if (res) {
           Swal.fire({
             icon: "success",
             title: "Item added to your cart",
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
           refetch();
         }
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+        const errorMessage = error.response.data.message;
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: `${errorMessage}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 
