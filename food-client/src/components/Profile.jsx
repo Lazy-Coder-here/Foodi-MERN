@@ -1,14 +1,17 @@
 import React from "react";
 import { useAuth } from "../contexts/AuthProvider";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = ({ user }) => {
   const { logOut } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logOut()
       .then(() => {
         // Sign-out successful.
         alert("Logout Successful!");
+        navigate("/");
       })
       .catch((error) => {
         // An error happened.
@@ -52,6 +55,9 @@ const Profile = ({ user }) => {
             </li>
             <li>
               <a>Settings</a>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
               <a onClick={handleLogout}>Logout</a>

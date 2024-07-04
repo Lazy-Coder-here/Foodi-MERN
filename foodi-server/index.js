@@ -17,12 +17,14 @@ mongoose
   .then(console.log("MongoDB connected!"))
   .catch((error) => console.log("Error connecting to MongoDB!", error));
 
-  // import routes
-  const menuRoutes = require("./api/routes/MenuRoutes");
-  const cartRoutes = require("./api/routes/CartRoutes");
-  
-  app.use("/menu", menuRoutes);
-  app.use("/carts", cartRoutes);
+// import routes
+const menuRoutes = require("./api/routes/MenuRoutes");
+const cartRoutes = require("./api/routes/CartRoutes");
+const userRoutes = require("./api/routes/userRoutes");
+
+app.use("/menu", menuRoutes);
+app.use("/carts", cartRoutes);
+app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
