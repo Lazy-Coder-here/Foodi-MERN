@@ -10,7 +10,7 @@ import useCart from "../Hooks/useCart";
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
 
-  const { user } = useAuth();
+  const { user, userLoggedIn } = useAuth();
   // console.log(user);
   const [cart, refetch] = useCart();
   // console.log(cart);
@@ -139,7 +139,7 @@ const Navbar = () => {
             </svg>
           </button>
           {/* cart items */}
-          <Link to="/cart-page">
+          <Link to={userLoggedIn && "/cart-page"}>
             <label
               tabIndex={0}
               role=""

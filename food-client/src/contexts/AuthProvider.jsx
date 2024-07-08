@@ -11,6 +11,8 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import axios from "axios";
+import { BaseURL } from "../Config/config";
 
 const AuthContext = createContext();
 const auth = getAuth(app);
@@ -69,13 +71,21 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   // function which is going to be called when we receive any user info
-  async function initializeUser(user) {
-    if (user) {
-      setUser({ ...user });
+  function initializeUser(currentUser) {
+    if (currentUser) {
+      setUser(currentUser);
       setUserLoggedIn(true);
+      const userInfo = { email: currentUser.email };
+      axios.post(`${BaseURL}/jwt`, userInfo).then((res) => {
+        // console.log(res.data.token);
+        if (res.data.token) {
+          localStorage.setItem("access-token", res.data.token);
+        }
+      });
     } else {
       setUser(null);
       setUserLoggedIn(false);
+      localStorage.removeItem("access-token");
     }
     setLoading(false);
   }

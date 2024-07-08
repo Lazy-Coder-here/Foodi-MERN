@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa6";
 import Modal from "./Modal";
 import { useAuth } from "../contexts/AuthProvider";
+import axios from "axios";
+import { BaseURL } from "../Config/config";
 
 const Signup = () => {
   const {
@@ -12,8 +14,13 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
-  const { createUser, signUpWithGmail, signUpWithFacebook, userLoggedIn } =
-    useAuth();
+  const {
+    createUser,
+    signUpWithGmail,
+    signUpWithFacebook,
+    userLoggedIn,
+    updateUserProfile,
+  } = useAuth();
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -23,13 +30,23 @@ const Signup = () => {
   const from = location.state?.from?.pathname || "/";
 
   const onSubmit = (data) => {
-    const { email, password } = data;
+    const { email, password, name, photoURL } = data;
     // console.log(email, password);
     createUser(email, password)
       .then((result) => {
         const { user } = result;
-        alert("Account created successfully!");
-        navigate(from, { replace: true });
+        updateUserProfile(name, photoURL).then(() => {
+          const userInfo = {
+            name: name,
+            email: email,
+            photoURL: photoURL,
+          };
+          axios.post(`${BaseURL}/users`, userInfo).then((res) => {
+            // console.log(res);
+            alert("Account created successfully!");
+            navigate(from, { replace: true });
+          });
+        });
       })
       .catch((error) => {
         setErrorMessage("Please enter a valid email");
@@ -39,8 +56,17 @@ const Signup = () => {
   // google sign-in
   const handleLoginGmail = () => {
     signUpWithGmail()
-      .then((result) => {
-        const { user } = result;
+      .then(async (result) => {
+        const currUser = result.user;
+        const userInfo = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+          photoURL: result?.user?.photoURL,
+        };
+        const findUser = await axios.get(`${BaseURL}/users/${currUser.email}`);
+        if (!findUser.data) {
+          await axios.post(`${BaseURL}/users`, userInfo);
+        }
         alert("Login Successful");
         document.getElementById("my_modal_3").close();
         navigate(from, { replace: true });
@@ -51,8 +77,17 @@ const Signup = () => {
   // facebook sign-in
   const handleLoginFacebook = () => {
     signUpWithFacebook()
-      .then((result) => {
-        const { user } = result;
+      .then(async (result) => {
+        const currUser = result.user;
+        const userInfo = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+          photoURL: result?.user?.photoURL,
+        };
+        const findUser = await axios.get(`${BaseURL}/users/${currUser.email}`);
+        if (!findUser.data) {
+          await axios.post(`${BaseURL}/users`, userInfo);
+        }
         alert("Login Successful");
         document.getElementById("my_modal_3").close();
         navigate(from, { replace: true });
@@ -74,6 +109,18 @@ const Signup = () => {
             className="card-body"
           >
             <h3 className="font-bold text-lg pb-2">Create an account</h3>
+            {/* name */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="name"
+                placeholder="Your name"
+                className="input input-bordered"
+                {...register("name")}
+              />
+            </div>
             {/* email */}
             <div className="form-control">
               <label className="label">

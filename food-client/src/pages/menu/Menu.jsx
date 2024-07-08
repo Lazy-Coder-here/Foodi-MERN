@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Cards from "../../components/Cards";
 import { FaFilter } from "react-icons/fa";
 import { BaseURL } from "../../Config/config";
+import axios from "axios";
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
@@ -16,8 +17,8 @@ const Menu = () => {
     // fetch data from backend
     const fetchData = async () => {
       try {
-        const response = await fetch(`${BaseURL}/menu`);
-        const data = await response.json();
+        const response = await axios.get(`${BaseURL}/menu`);
+        const data = response.data;
         // console.log(data);
         setMenu(data);
         setFilteredItems(data);

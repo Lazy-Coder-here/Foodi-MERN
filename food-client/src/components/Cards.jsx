@@ -7,7 +7,7 @@ import { BaseURL } from "../Config/config";
 import useCart from "../Hooks/useCart";
 import axios from "axios";
 
-const Cards = ({ i, item }) => {
+const Cards = ({ item }) => {
   const { _id, name, image, recipe, price } = item;
 
   const [isHeartFilled, setIsHeartFilled] = useState(false);

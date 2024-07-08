@@ -19,7 +19,7 @@ const CartPage = () => {
   // handle increase function
   const handleIncrease = (item) => {
     // console.log(item._id);
-    console.log("+ clicked");
+    // console.log("+ clicked");
     fetch(`${BaseURL}/carts/${item._id}`, {
       method: "PUT",
       headers: {
@@ -31,7 +31,7 @@ const CartPage = () => {
       .then((data) => {
         // console.log(data)
         const updatedCart = cartItems.map((cartItem) => {
-          if (cartItem.id === item.id) {
+          if (cartItem.id === item._id) {
             return {
               ...cartItem,
               quantity: cartItem.quantity + 1,
@@ -42,13 +42,11 @@ const CartPage = () => {
         refetch();
         setCartItems(updatedCart);
       });
-
-    refetch();
   };
 
   // handle decrease function
   const handleDecrease = (item) => {
-    console.log("- clicked");
+    // console.log("- clicked");
     if (item.quantity > 1) {
       fetch(`${BaseURL}/carts/${item._id}`, {
         method: "PUT",
@@ -60,7 +58,7 @@ const CartPage = () => {
         .then((res) => res.json())
         .then((data) => {
           const updatedCart = cartItems.map((cartItem) => {
-            if (cartItem.id === item.id) {
+            if (cartItem.id === item._id) {
               return {
                 ...cartItem,
                 quantity: cartItem.quantity - 1,
@@ -71,8 +69,6 @@ const CartPage = () => {
           refetch();
           setCartItems(updatedCart);
         });
-
-      refetch();
     } else {
       alert("item can't be zero!");
     }

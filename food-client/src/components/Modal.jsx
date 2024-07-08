@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FaGoogle, FaFacebookF, FaTwitter } from "react-icons/fa6";
 import { useAuth } from "../contexts/AuthProvider";
+import { BaseURL } from "../Config/config";
+import axios from "axios";
 
 const Modal = () => {
   const {
@@ -24,9 +26,20 @@ const Modal = () => {
     const { email, password } = data;
     // console.log(email, password);
     login(email, password)
-      .then((result) => {
+      .then(async (result) => {
         setErrorMessage("");
-        const { user } = result;
+        const currUser = result.user;
+        // console.log(currUser);
+        const userInfo = {
+          name: result?.user?.displayName,
+          email: email,
+          photoURL: result?.user?.photoURL,
+        };
+        const findUser = await axios.get(`${BaseURL}/users/${currUser.email}`);
+        // console.log(findUser);
+        if (!findUser.data) {
+          await axios.post(`${BaseURL}/users`, userInfo);
+        }
         alert("Login Successful");
         document.getElementById("my_modal_3").close();
         navigate(from, { replace: true });
@@ -39,8 +52,17 @@ const Modal = () => {
   // google sign-in
   const handleLoginGmail = () => {
     signUpWithGmail()
-      .then((result) => {
-        const { user } = result;
+      .then(async (result) => {
+        const currUser = result.user;
+        const userInfo = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+          photoURL: result?.user?.photoURL,
+        };
+        const findUser = await axios.get(`${BaseURL}/users/${currUser.email}`);
+        if (!findUser.data) {
+          await axios.post(`${BaseURL}/users`, userInfo);
+        }
         alert("Login Successful");
         document.getElementById("my_modal_3").close();
         navigate(from, { replace: true });
@@ -51,8 +73,17 @@ const Modal = () => {
   // facebook sign-in
   const handleLoginFacebook = () => {
     signUpWithFacebook()
-      .then((result) => {
-        const { user } = result;
+      .then(async (result) => {
+        const currUser = result.user;
+        const userInfo = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+          photoURL: result?.user?.photoURL,
+        };
+        const findUser = await axios.get(`${BaseURL}/users/${currUser.email}`);
+        if (!findUser.data) {
+          await axios.post(`${BaseURL}/users`, userInfo);
+        }
         alert("Login Successful");
         document.getElementById("my_modal_3").close();
         navigate(from, { replace: true });

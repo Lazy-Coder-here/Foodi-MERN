@@ -10,6 +10,18 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// get a user
+const getUser = async (req, res) => {
+  const user = req.params;
+  const query = { email: user.email };
+  try {
+    const existingUser = await User.findOne(query);
+    res.status(200).json(existingUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // post a new user
 const createUser = async (req, res) => {
   const user = req.body;
@@ -50,6 +62,7 @@ const getAdmin = async (req, res) => {
   const query = { email: email };
   try {
     const user = await User.findOne(query);
+    // console.log(req.decoded.email);
     if (email !== req.decoded.email) {
       return res.status(403).send({ message: "Forbidden access!" });
     }
@@ -86,6 +99,7 @@ const makeAdmin = async (req, res) => {
 
 module.exports = {
   getAllUsers,
+  getUser,
   createUser,
   deleteUser,
   getAdmin,
