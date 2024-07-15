@@ -74,6 +74,9 @@ const AuthProvider = ({ children }) => {
   function initializeUser(currentUser) {
     if (currentUser) {
       setUser(currentUser);
+      if(!currentUser.email) {
+        currentUser.email = currentUser.providerData[0].email;
+      }
       setUserLoggedIn(true);
       const userInfo = { email: currentUser.email };
       axios.post(`${BaseURL}/jwt`, userInfo).then((res) => {

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 const useAdmin = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  console.log(user);
 
   const {
     refetch,

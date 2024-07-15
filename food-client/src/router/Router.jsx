@@ -13,6 +13,8 @@ import AddMenu from "../pages/dashboard/admin/AddMenu";
 import ManageItems from "../pages/dashboard/admin/ManageItems";
 import UpdateMenu from "../pages/dashboard/admin/UpdateMenu";
 import { BaseURL } from "../Config/config";
+import Payment from "../pages/menu/Payment";
+import Order from "../pages/dashboard/Order";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/order",
+        element: (
+          <PrivateRouter>
+            <Order />
+          </PrivateRouter>
+        ),
+      },
+      {
         path: "/cart-page",
         element: <CartPage />,
       },
@@ -39,12 +49,17 @@ const router = createBrowserRouter([
         path: "/update-profile",
         element: <UpdateProfile />,
       },
+      {
+        path: "/process-checkout",
+        element: <Payment />,
+      },
     ],
   },
   {
     path: "/sign-up",
     element: <Signup />,
   },
+  // admin routes
   {
     path: "/dashboard",
     element: (

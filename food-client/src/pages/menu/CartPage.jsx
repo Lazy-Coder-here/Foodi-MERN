@@ -5,11 +5,15 @@ import Swal from "sweetalert2";
 import { BaseURL } from "../../Config/config";
 import { useAuth } from "../../contexts/AuthProvider";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const CartPage = () => {
   const [cart, refetch] = useCart();
   const { user } = useAuth();
   const [cartItems, setCartItems] = useState(cart);
+
+    // calculate total no of items
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   // calculate price
   const calculatePrice = (item) => {
@@ -127,85 +131,102 @@ const CartPage = () => {
       </div>
 
       {/* table for the cart */}
-      <div className="border shadow-md">
-        <div className="overflow-x-auto">
-          <table className="table">
-            {/* head */}
-            <thead className="bg-green text-white rounded-sm">
-              <tr>
-                <th>#</th>
-                <th>Food</th>
-                <th>Item Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* items */}
-              {cart.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle h-12 w-12">
-                          <img src={item.image} alt="" />
+      {cart.length > 0 ? (
+        <div>
+          <div className="border shadow-md">
+            <div className="overflow-x-auto">
+              <table className="table">
+                {/* head */}
+                <thead className="bg-green text-white rounded-sm">
+                  <tr>
+                    <th>#</th>
+                    <th>Food</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* items */}
+                  {cart.map((item, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div className="avatar">
+                            <div className="mask mask-squircle h-12 w-12">
+                              <img src={item.image} alt="" />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="font-medium">{item.name}</td>
-                  <td>
-                    <button
-                      className="btn btn-xs"
-                      onClick={() => handleDecrease(item)}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      className="w-10 mx-2 text-center overflow-hidden appearance-none"
-                      onChange={() => console.log(item.quantity)}
-                    />
-                    <button
-                      className="btn btn-xs"
-                      onClick={() => handleIncrease(item)}
-                    >
-                      +
-                    </button>
-                  </td>
-                  <td>${calculatePrice(item).toFixed(2)}</td>
-                  <th>
-                    <button
-                      className="btn btn-ghost text-red btn-xs"
-                      onClick={() => handleDelete(item)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </th>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                      </td>
+                      <td className="font-medium">{item.name}</td>
+                      <td>
+                        <button
+                          className="btn btn-xs"
+                          onClick={() => handleDecrease(item)}
+                        >
+                          -
+                        </button>
+                        <input
+                          type="number"
+                          value={item.quantity}
+                          className="w-10 mx-2 text-center overflow-hidden appearance-none"
+                          onChange={() => console.log(item.quantity)}
+                        />
+                        <button
+                          className="btn btn-xs"
+                          onClick={() => handleIncrease(item)}
+                        >
+                          +
+                        </button>
+                      </td>
+                      <td>${calculatePrice(item).toFixed(2)}</td>
+                      <th>
+                        <button
+                          className="btn btn-ghost text-red btn-xs"
+                          onClick={() => handleDelete(item)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </th>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-      {/* customer details */}
-      <div className="my-12 flex flex-col md:flex-row justify-between items-start">
-        <div className="md:w-1/2 space-y-3">
-          <h3 className="font-medium">Customer Details</h3>
-          <p>Name: {user.displayName}</p>
-          <p>Email: {user.email}</p>
+          {/* customer details */}
+          <div className="my-12 flex flex-col md:flex-row justify-between items-start">
+            <div className="md:w-1/2 space-y-3">
+              <h3 className="font-medium">Customer Details</h3>
+              <p>Name: {user?.displayName}</p>
+              <p>Email: {user?.email}</p>
+            </div>
+            <div className="md:w-1/2 space-y-3">
+              <h3 className="font-medium">Shopping Details</h3>
+              <p>Total Items: {totalItems}</p>
+              <p>Total Price: ${orderTotal.toFixed(2)}</p>
+              <Link to="/process-checkout">
+                <button className="btn btn-md px-8 py-1 mt-5 bg-green text-white">
+                  Proceed Checkout
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="md:w-1/2 space-y-3">
-          <h3 className="font-medium">Shopping Details</h3>
-          <p>Total Items: {cart.length}</p>
-          <p>Total Price: ${orderTotal.toFixed(2)}</p>
-          <button className="btn bg-green text-white">Proceed Checkout</button>
+      ) : (
+        <div className="text-center mt-20">
+          <p>Cart is empty. Please add products.</p>
+          <Link to="/menu">
+            <button className="btn bg-green text-white mt-3">
+              Back to Menu
+            </button>
+          </Link>
         </div>
-      </div>
+      )}
     </div>
   );
 };

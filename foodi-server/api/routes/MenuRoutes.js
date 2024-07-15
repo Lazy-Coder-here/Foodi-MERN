@@ -1,5 +1,4 @@
 const express = require("express");
-const Menu = require("../models/Menu");
 const router = express.Router();
 
 const menuControllers = require("../controllers/menuControllers");
