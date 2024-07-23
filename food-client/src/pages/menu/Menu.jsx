@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Cards from "../../components/Cards";
 import { FaFilter } from "react-icons/fa";
-import { BaseURL } from "../../Config/config";
-import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
@@ -11,15 +10,15 @@ const Menu = () => {
   const [sortOption, setSortOption] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const axiosSecure = useAxiosSecure();
 
   // loading data
   useEffect(() => {
     // fetch data from backend
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${BaseURL}/menu`);
+        const response = await axiosSecure.get(`/menu`);
         const data = response.data;
-        // console.log(data);
         setMenu(data);
         setFilteredItems(data);
       } catch (error) {

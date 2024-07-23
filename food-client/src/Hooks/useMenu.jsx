@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { BaseURL } from "../Config/config";
-import axios from "axios";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useMenu = () => {
+  const axiosSecure = useAxiosSecure();
   const {
     data: menu = [],
     isPending: loading,
@@ -11,8 +10,7 @@ const useMenu = () => {
   } = useQuery({
     queryKey: ["menu"],
     queryFn: async () => {
-      const res = await axios.get(`${BaseURL}/menu`);
-      // console.log(res.data);
+      const res = await axiosSecure.get(`/menu`);
       return res.data;
     },
   });

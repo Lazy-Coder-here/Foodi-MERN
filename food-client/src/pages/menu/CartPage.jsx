@@ -4,16 +4,17 @@ import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { BaseURL } from "../../Config/config";
 import { useAuth } from "../../contexts/AuthProvider";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const CartPage = () => {
   const [cart, refetch] = useCart();
   const { user } = useAuth();
   const [cartItems, setCartItems] = useState(cart);
+  const axiosSecure = useAxiosSecure();
 
-    // calculate total no of items
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  // calculate total no of items
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   // calculate price
   const calculatePrice = (item) => {
@@ -22,8 +23,6 @@ const CartPage = () => {
 
   // handle increase function
   const handleIncrease = (item) => {
-    // console.log(item._id);
-    // console.log("+ clicked");
     fetch(`${BaseURL}/carts/${item._id}`, {
       method: "PUT",
       headers: {
@@ -33,7 +32,6 @@ const CartPage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data)
         const updatedCart = cartItems.map((cartItem) => {
           if (cartItem.id === item._id) {
             return {
@@ -50,7 +48,6 @@ const CartPage = () => {
 
   // handle decrease function
   const handleDecrease = (item) => {
-    // console.log("- clicked");
     if (item.quantity > 1) {
       fetch(`${BaseURL}/carts/${item._id}`, {
         method: "PUT",
@@ -97,7 +94,7 @@ const CartPage = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
+        axiosSecure
           .delete(`${BaseURL}/carts/${item._id}`)
           .then((res) => {
             if (res) {

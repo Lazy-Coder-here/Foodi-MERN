@@ -4,6 +4,8 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Cards from "../../components/Cards";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import axios from "axios";
+import { BaseURL } from "../../Config/config";
 
 const Simple_next_arrow = (props) => {
   const { className, style, onClick } = props;
@@ -36,13 +38,19 @@ const SpecialDishes = () => {
   const slider = React.useRef(null);
 
   useEffect(() => {
-    fetch("/menu.json")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${BaseURL}/menu`);
+        const data = response.data;
         const specials = data.filter((item) => item.category === "popular");
-        // console.log(specials);
         setRecipes(specials);
-      });
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+
+    // call the function
+    fetchData();
   }, []);
 
   // setting

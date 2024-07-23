@@ -24,19 +24,16 @@ const Modal = () => {
 
   const onSubmit = (data) => {
     const { email, password } = data;
-    // console.log(email, password);
     login(email, password)
       .then(async (result) => {
         setErrorMessage("");
         const currUser = result.user;
-        // console.log(currUser);
         const userInfo = {
           name: result?.user?.displayName,
           email: email,
           photoURL: result?.user?.photoURL,
         };
         const findUser = await axios.get(`${BaseURL}/users/${currUser.email}`);
-        // console.log(findUser);
         if (!findUser.data) {
           await axios.post(`${BaseURL}/users`, userInfo);
         }

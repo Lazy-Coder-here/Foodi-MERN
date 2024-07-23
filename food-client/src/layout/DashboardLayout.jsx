@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import logo from "/logo.png";
 import useAdmin from "../Hooks/useAdmin";
+import { useAuth } from "../contexts/AuthProvider";
 
 const sharedLinks = (
   <>
@@ -31,21 +32,34 @@ const sharedLinks = (
       </Link>
     </li>
     <li>
-      <Link to="/menu">
+      <div>
         <FaLocationArrow /> Order Tracking
-      </Link>
+      </div>
     </li>
     <li>
-      <Link to="/menu">
+      <div>
         <MdOutlineSupportAgent /> Customer Support
-      </Link>
+      </div>
     </li>
   </>
 );
 
-
 const DashboardLayout = () => {
   const [isAdmin, isAdminLoading] = useAdmin();
+  const { logOut } = useAuth();
+
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        // Sign-out successful.
+        alert("Logout Successful!");
+        navigate("/");
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
 
   return (
     <div>
@@ -61,7 +75,10 @@ const DashboardLayout = () => {
               >
                 <MdOutlineDashboardCustomize />
               </label>
-              <button className="btn rounded-full px-6 flex items-center gap-2 bg-green text-white sm:hidden">
+              <button
+                onClick={handleLogout}
+                className="btn rounded-full px-6 flex items-center gap-2 bg-green text-white sm:hidden"
+              >
                 <FaRegUser />
                 Logout
               </button>
@@ -92,7 +109,7 @@ const DashboardLayout = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard">
+                <Link to="/dashboard/manage-bookings">
                   <MdBusinessCenter /> Manage Bookings
                 </Link>
               </li>
@@ -123,10 +140,11 @@ const DashboardLayout = () => {
             className="bg-rose-100 border border-rose-400 text-rose-700 px-4 py-3 rounded relative"
             role="alert"
           >
-            <strong className="font-bold">Can't Access!<br/></strong>
-            <span className="block sm:inline">
-              Only Admin's can access
-            </span>
+            <strong className="font-bold">
+              Can't Access!
+              <br />
+            </strong>
+            <span className="block sm:inline">Only Admin's can access</span>
             <Link className="absolute top-0 bottom-0 right-0 px-4 py-3" to="/">
               <svg
                 className="fill-current h-6 w-6 text-rose-500"

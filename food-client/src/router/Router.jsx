@@ -15,6 +15,7 @@ import UpdateMenu from "../pages/dashboard/admin/UpdateMenu";
 import { BaseURL } from "../Config/config";
 import Payment from "../pages/menu/Payment";
 import Order from "../pages/dashboard/Order";
+import ManageBookings from "../pages/dashboard/admin/ManageBookings";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
         path: "update-menu/:id",
         element: <UpdateMenu />,
         loader: ({ params }) => fetch(`${BaseURL}/menu/${params.id}`),
+      },
+      {
+        path: "manage-bookings",
+        element: <ManageBookings />,
       },
     ],
   },

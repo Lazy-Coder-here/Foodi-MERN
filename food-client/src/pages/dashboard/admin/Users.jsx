@@ -14,7 +14,6 @@ const Users = () => {
     },
   });
 
-  // console.log(users);
   const handleMakeAdmin = (user) => {
     axiosSecure.patch(`/users/admin/${user._id}`).then((res) => {
       alert(`${user.name} is now an admin`);

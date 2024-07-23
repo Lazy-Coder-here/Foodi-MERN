@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthProvider";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const Main = () => {
-  const { loading, user } = useAuth();
+  const { loading } = useAuth();
   return (
     <div>
       {loading ? (

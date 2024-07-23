@@ -11,5 +11,6 @@ router.post("/", userController.createUser);
 router.delete("/:id",verifyToken, verifyAdmin, userController.deleteUser);
 router.get("/admin/:email", verifyToken, userController.getAdmin);
 router.patch("/admin/:id",verifyToken, verifyAdmin, userController.makeAdmin);
+router.patch("/:email", verifyToken, userController.updateUser);
 
 module.exports = router;

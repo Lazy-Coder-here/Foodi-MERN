@@ -31,7 +31,6 @@ const Signup = () => {
 
   const onSubmit = (data) => {
     const { email, password, name, photoURL } = data;
-    // console.log(email, password);
     createUser(email, password)
       .then((result) => {
         const { user } = result;
@@ -42,7 +41,6 @@ const Signup = () => {
             photoURL: photoURL,
           };
           axios.post(`${BaseURL}/users`, userInfo).then((res) => {
-            // console.log(res);
             alert("Account created successfully!");
             navigate(from, { replace: true });
           });

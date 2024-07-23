@@ -62,7 +62,6 @@ const getAdmin = async (req, res) => {
   const query = { email: email };
   try {
     const user = await User.findOne(query);
-    // console.log(req.decoded.email);
     if (email !== req.decoded.email) {
       return res.status(403).send({ message: "Forbidden access!" });
     }
@@ -97,6 +96,29 @@ const makeAdmin = async (req, res) => {
   }
 };
 
+// update a user
+const updateUser = async (req, res) => {
+  const { email } = req.params;
+  const { name, photoURL } = req.body;
+  try {
+    const updateUser = await User.findOneAndUpdate(
+      { email: email },
+      { name, photoURL },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updateUser) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+    res.status(200).json(updateUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -104,4 +126,5 @@ module.exports = {
   deleteUser,
   getAdmin,
   makeAdmin,
+  updateUser,
 };

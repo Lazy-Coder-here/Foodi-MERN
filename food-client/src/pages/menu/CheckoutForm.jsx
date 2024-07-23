@@ -19,11 +19,9 @@ const CheckoutForm = ({ price, cart }) => {
 
   useEffect(() => {
     if (typeof price !== "number" || price < 1) {
-      console.log("nan");
       return;
     }
     axiosSecure.post("/create-payment-intent", { price }).then((res) => {
-      console.log(res.data.clientSecret);
       setClientSecret(res.data.clientSecret);
     });
   }, [price, axiosSecure]);
@@ -59,7 +57,6 @@ const CheckoutForm = ({ price, cart }) => {
       setCardError(error.message);
     } else {
       setCardError("");
-      // console.log("[PaymentMethod]", paymentMethod);
     }
 
     const { paymentIntent, error: confirmError } =
@@ -75,25 +72,20 @@ const CheckoutForm = ({ price, cart }) => {
     if (confirmError) {
       console.log(confirmError);
     }
-    console.log(paymentIntent);
     if (paymentIntent.status === "succeeded") {
-      console.log(paymentIntent.id);
       // payment info data
       const paymentInfo = {
         email: user.email,
         transactionId: paymentIntent.id,
         price,
-        quantity: totalItems,
         status: "Order Pending",
         itemName: cart.map((item) => item.name),
         cartItems: cart.map((item) => item._id),
-        menuItems: cart.map((item) => item.menuItemId),
+        menuItems: cart.map((item) => ({ itemId: item.menuItemId, quantity: item.quantity })),
       };
 
-      console.log(paymentInfo);
       // send info to backend
       axiosSecure.post("/payments", paymentInfo).then((res) => {
-        console.log(res.data);
         alert("payment successful!");
         navigate("/order");
       });

@@ -24,7 +24,6 @@ const AddMenu = () => {
         "content-type": "multipart/form-data",
       },
     });
-    // console.log(hostingImg);
     if (hostingImg.data.success) {
       const menuItem = {
         name: data.name,
@@ -33,7 +32,6 @@ const AddMenu = () => {
         recipe: data.recipe,
         image: hostingImg.data.data.display_url,
       };
-      // console.log(menuItem);
 
       const postMenuItem = await axiosSecure.post("/menu", menuItem);
       if(postMenuItem.status === 200) {

@@ -34,16 +34,20 @@ const menuRoutes = require("./api/routes/MenuRoutes");
 const cartRoutes = require("./api/routes/CartRoutes");
 const userRoutes = require("./api/routes/userRoutes");
 const paymentRoutes = require("./api/routes/paymentRoutes");
+const adminStatRoutes = require("./api/routes/adminStatRoutes");
+const orderStatRoutes = require("./api/routes/orderStatsRoutes");
 
 app.use("/menu", menuRoutes);
 app.use("/carts", cartRoutes);
 app.use("/users", userRoutes);
 app.use("/payments", paymentRoutes);
+app.use("/adminStats", adminStatRoutes);
+app.use("/orderStats", orderStatRoutes);
 
 // stripe payment routes
 app.post("/create-payment-intent", async (req, res) => {
   const { price } = req.body;
-  const amount = price * 100;
+  const amount = Math.floor(price * 100);
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({

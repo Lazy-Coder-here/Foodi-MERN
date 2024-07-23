@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import { BaseURL } from "../../../Config/config";
 
 const ManageItems = () => {
   const [menu, loading, refetch] = useMenu();
@@ -12,7 +11,6 @@ const ManageItems = () => {
 
   // Delete a item from the menu
   const handleDeleteItem = (item) => {
-    // console.log(item)
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -24,7 +22,7 @@ const ManageItems = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure
-          .delete(`${BaseURL}/menu/${item._id}`)
+          .delete(`/menu/${item._id}`)
           .then((res) => {
             if (res) {
               Swal.fire({
