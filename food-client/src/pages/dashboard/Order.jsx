@@ -68,7 +68,6 @@ const Order = () => {
                         <td>{item.status}</td>
                         <th>
                           <Link
-                            to="/contact"
                             className="btn btn-ghost text-red btn-xs"
                           >
                             Contact

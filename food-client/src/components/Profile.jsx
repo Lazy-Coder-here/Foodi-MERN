@@ -53,8 +53,8 @@ const Profile = ({ user }) => {
             <li>
               <a href="/order">Orders</a>
             </li>
-            <li>
-              <a>Settings</a>
+            <li className="md:hidden">
+              <a href="/cart-page">My Cart</a>
             </li>
             <li>
               <Link to="/dashboard">Dashboard</Link>
